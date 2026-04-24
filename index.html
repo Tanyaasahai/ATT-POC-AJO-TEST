@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEP & AJO Test Site</title>
+<script>
+     !function(n,o){o.forEach(function(o){n[o]||((n.__alloyNS=n.__alloyNS||
+     []).push(o),n[o]=function(){var u=arguments;return new Promise(
+     function(i,l){n[o].q.push([i,l,u])})},n[o].q=[])})}
+     (window,["alloy"]);
+</script>
+<script>
+     alloy("configure", {
+       datastreamId: "YOUR_DATASTREAM_ID", /* We will update this later */
+       orgId: "YOUR_ORG_ID@AdobeOrg",      /* We will update this later */
+       edgeDomain: "data.adobedc.net",
+       debugEnabled: true                  /* Helps us see errors in the console */
+     });
+</script>
+</head>
+<body style="font-family: Arial, sans-serif; padding: 50px;">
+<h1>AEP Test Use Case</h1>
+<p>Enter a username to simulate logging in and sending an event to AEP.</p>
+<input type="text" id="userInput" placeholder="Enter a username">
+<button id="sendDataBtn">Send Data to AEP</button>
+<script>
+       document.getElementById("sendDataBtn").addEventListener("click", function() {
+           var collectedName = document.getElementById("userInput").value;
+           // Triggering the event to AEP
+           alloy("sendEvent", {
+               "xdm": {
+                   // We will map this exactly to your custom schema in the next phase
+                   "web": {
+                       "webPageDetails": {
+                           "name": "Test Home Page"
+                       }
+                   },
+                   "_yourTenantId": {
+                       "testUserName": collectedName
+                   }
+               }
+           }).then(function(result) {
+               console.log("Success! Data sent to AEP Edge Network:", result);
+               alert("Event sent to AEP successfully!");
+           }).catch(function(error) {
+               console.error("Uh oh! Error sending data:", error);
+           });
+       });
+</script>
+</body>
+</html>
