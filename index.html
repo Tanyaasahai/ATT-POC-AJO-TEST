@@ -12,17 +12,17 @@
 </script>
 <script>
      alloy("configure", {
-       datastreamId: "YOUR_DATASTREAM_ID", /* We will update this later */
-       orgId: "YOUR_ORG_ID@AdobeOrg",      /* We will update this later */
+       datastreamId: "2f8c3176-75c0-49a5-9ce0-f725a390a263", /* Your actual Datastream ID */
+       orgId: "0CEB60F754C7E06B0A4C98A2@AdobeOrg",             /* <-- UPDATE THIS */
        edgeDomain: "data.adobedc.net",
-       debugEnabled: true                  /* Helps us see errors in the console */
+       debugEnabled: true                  
      });
 </script>
 </head>
 <body style="font-family: Arial, sans-serif; padding: 50px;">
 <h1>AEP Test Use Case</h1>
-<p>Enter a username to simulate logging in and sending an event to AEP.</p>
-<input type="text" id="userInput" placeholder="Enter a username">
+<p>Enter a UUID to simulate logging in and sending an event to AEP.</p>
+<input type="text" id="userInput" placeholder="Enter a UUID">
 <button id="sendDataBtn">Send Data to AEP</button>
 <script>
        document.getElementById("sendDataBtn").addEventListener("click", function() {
@@ -30,14 +30,13 @@
            // Triggering the event to AEP
            alloy("sendEvent", {
                "xdm": {
-                   // We will map this exactly to your custom schema in the next phase
                    "web": {
                        "webPageDetails": {
                            "name": "Test Home Page"
                        }
                    },
-                   "_yourTenantId": {
-                       "testUserName": collectedName
+                   "_accenture_partner": {
+                       "UUID": collectedName
                    }
                }
            }).then(function(result) {
