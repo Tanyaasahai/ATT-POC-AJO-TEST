@@ -1,53 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AEP & AJO Test Site</title>
-<script>
-     !function(n,o){o.forEach(function(o){n[o]||((n.__alloyNS=n.__alloyNS||
-     []).push(o),n[o]=function(){var u=arguments;return new Promise(
-     function(i,l){n[o].q.push([i,l,u])})},n[o].q=[])})}
-     (window,["alloy"]);
-</script>
-<script src="https://cdn1.adoberesources.net/alloy/2.22.0/alloy.min.js" async></script>
-<script>
-     alloy("configure", {
-       datastreamId: "2f8c3176-75c0-49a5-9ce0-f725a390a261",
-       orgId: "0CEB60F754C7E06B0A4C98A2@AdobeOrg",            
-       edgeDomain: "data.adobedc.net",
-       debugEnabled: true,
-     sandbox: "endtoendflowpoc"
-     });
-</script>
-</head>
-<body style="font-family: Arial, sans-serif; padding: 50px;">
-<h1>AEP Test Use Case</h1>
-<p>Enter a UUID to simulate logging in and sending an event to AEP.</p>
-<input type="text" id="userInput" placeholder="Enter a UUID">
-<button id="sendDataBtn">Send Data to AEP</button>
-<script>
-       document.getElementById("sendDataBtn").addEventListener("click", function() {
-           var collectedName = document.getElementById("userInput").value;
-           // Triggering the event to AEP
-           alloy("sendEvent", {
-               "xdm": {
-                   "web": {
-                       "webPageDetails": {
-                           "name": "Test Home Page"
-                       }
-                   },
-                   "_accenture_partner": {
-                       "UUID": collectedName
-                   }
-               }
-           }).then(function(result) {
-               console.log("Success! Data sent to AEP Edge Network:", result);
-               alert("Event sent to AEP successfully!");
-           }).catch(function(error) {
-               console.error("Uh oh! Error sending data:", error);
-           });
-       });
-</script>
-</body>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>AEP & AJO Test Site</title>
+      <script src="https://cdn1.adoberesources.net/alloy/2.22.0/alloy.min.js" async></script>
+      <script>
+         !function(n,o){o.forEach(function(o){n[o]||((n.__alloyNS=n.__alloyNS||
+         
+         []).push(o),n[o]=function(){var u=arguments;return new Promise(
+         
+         function(i,l){n[o].q.push([i,l,u])})},n[o].q=[])})}
+         
+         (window,["alloy"]);
+         
+         // 2. Configuration
+         
+         alloy("configure", {
+         
+           datastreamId: "2f8c3176-75c0-49a5-9ce0-f725a390a261",
+         
+           orgId: "0CEB60F754C7E06B0A4C98A2@AdobeOrg",
+         
+           edgeDomain: "data.adobedc.net",
+         
+           debugEnabled: true,
+         
+           sandbox: "end2endflowpoc"
+         
+         });
+      </script>
+   </head>
+   <body style="font-family: Arial, sans-serif; padding: 50px;">
+      <h1>AEP Test Use Case</h1>
+      <p>Enter a UUID to simulate logging in and sending an event to AEP.</p>
+      <input type="text" id="userInput" placeholder="Enter a UUID" style="padding: 10px; width: 250px;">
+      <button id="sendDataBtn" style="padding: 10px; cursor: pointer;">Send Data to AEP</button>
+      <script>
+         document.getElementById("sendDataBtn").addEventListener("click", function() {
+         
+             var collectedUUID = document.getElementById("userInput").value;
+         
+             if (!collectedUUID) {
+         
+                 alert("Please enter a UUID first!");
+         
+                 return;
+         
+             }
+         
+             // Sending the XDM event
+         
+             alloy("sendEvent", {
+         
+                 "xdm": {
+         
+                     "web": {
+         
+                         "webPageDetails": {
+         
+                             "name": "Test Home Page"
+         
+                         }
+         
+                     },
+         
+                     "_accenture_partner": {
+         
+                         "UUID": collectedUUID
+         
+                     }
+         
+                 }
+         
+             }).then(function(result) {
+         
+                 console.log("Success! Data sent to AEP Edge Network:", result);
+         
+                 alert("Event sent to AEP successfully!");
+         
+             }).catch(function(error) {
+         
+                 console.error("Uh oh! Error sending data:", error);
+         
+                 alert("Error: Look at the console for details.");
+         
+             });
+         
+         });
+      </script>
+   </body>
 </html>
